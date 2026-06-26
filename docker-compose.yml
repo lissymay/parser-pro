@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  # Наш сервер приложений (Бэкенд)
+  parser-backend:
+    build: .
+    ports:
+      - "3001:3000"  # Снаружи порт 3001, внутри контейнера — 3000
+    environment:
+      - NODE_ENV=production
+      # Передаем строку подключения к БД внутрь бэкенда
+      - MONGO_URI=mongodb://database-mongo:27017/parser_db
+    depends_on:
+      - database-mongo
+
+  # Контейнер базы данных
+  database-mongo:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
