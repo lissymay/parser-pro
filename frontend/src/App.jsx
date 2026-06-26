@@ -40,7 +40,8 @@ export default function App() {
   const fetchHistory = async () => {
     setLoadingHistory(true);
     try {
-      const response = await fetch('http://localhost:3000/history');
+      // ИСПРАВЛЕНО: Порт изменен на 3001
+      const response = await fetch('http://localhost:3001/history');
       if (response.ok) {
         const data = await response.json();
         setHistoryItems(data);
@@ -61,7 +62,8 @@ export default function App() {
   const handleClearHistory = async () => {
     if (!window.confirm("Вы уверены, что хотите полностью стереть историю трансляций из базы данных?")) return;
     try {
-      const response = await fetch('http://localhost:3000/history', { method: 'DELETE' });
+      // ИСПРАВЛЕНО: Порт изменен на 3001
+      const response = await fetch('http://localhost:3001/history', { method: 'DELETE' });
       if (response.ok) {
         setHistoryItems([]);
       }
@@ -104,7 +106,8 @@ export default function App() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000' + url, {
+      // ИСПРАВЛЕНО: Порт изменен на 3001
+      const response = await fetch('http://localhost:3001' + url, {
         method: 'POST',
         headers: { 'Content-Type': contentType },
         body: body
@@ -196,7 +199,7 @@ export default function App() {
         {/* --- ПЕСОЧНИЦА ШАБЛОНОВ --- */}
         <div style={styles.templateBox}>
           <span style={styles.templateLabel}>⚡ Шаблоны:</span>
-          {templates[currentMode].map((tpl, i) => (
+          {templates[currentMode === 'to-json' ? 'to-json' : 'from-json']?.map((tpl, i) => (
             <button 
               key={i} 
               style={styles.templateBtn} 
